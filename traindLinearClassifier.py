@@ -1,21 +1,18 @@
 from sklearn import *
 from sklearn.multiclass import *
-import sklearn.neural_network as nn
-from sklearn.tree import DecisionTreeClassifier
 
 import numpy as n
 import pickle as p
 
-# Both values summarized must not exceed 16
-TRAINSAMPLESIZE = 14
-TESTSAMPLESIZE = (16 - TRAINSAMPLESIZE)
+import numpy as n
+import pickle as p
+
+SAMPLESIZE = 3200
+# Both values summarized must not exceed 32
+TRAINSAMPLESIZE = 30
+TESTSAMPLESIZE = (32 - TRAINSAMPLESIZE)
 
 plants = p.load(open("plants.p", "rb"))
-print plants[0].shape
-print plants[1].shape
-print plants[0].sum()
-print plants[1].sum()
-
 
 d = plants[0]
 l = n.argmax(plants[1], axis=1)
@@ -34,8 +31,8 @@ cTr= 0
 cTe = 0
 # distribute data into train and test data
 print "Splitting data..."
-for x in range(0, 1600):
-    if c >= 16:
+for x in range(0, SAMPLESIZE):
+    if c >= 32:
         c = 0
     
     if TRAINSAMPLESIZE - c > 0:
@@ -51,15 +48,8 @@ for x in range(0, 1600):
 
 print "Finished with splitting data..."
 
-print traind[0]
-print traind[0].sum()
-print trainl.sum()
-
-
-print "LINEAR LEARNING with stochastic gradient descent and hinge loss:"
-
 classifier = linear_model.SGDClassifier(loss="hinge",penalty="none",
-learning_rate="constant", eta0=0.001, n_iter=5)
+                                        learning_rate="constant", eta0=0.0005, n_iter=15)
 print "Training data..."
 classifier.fit(traind, trainl)
 print "Finished training..."

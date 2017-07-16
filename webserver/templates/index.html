@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <title> Plant Classification App</title>
+        <h2>Plant Classification App</h2>
+        {% if cp %}
+        <h3>{{cp}}!</h3>
+        {% endif %}
+        <form action="/" method="POST" enctype=multipart/form-data>
+            <input name="file" type=file>
+            <input type="submit" value="Predict">
+        </form>
+        <!-- <script src='{{ url_for("static", filename="index.js") }}'></script> -->
+    </body>
+</html>
