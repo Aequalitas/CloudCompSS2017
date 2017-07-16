@@ -56,38 +56,3 @@ print "Finished training..."
 
 
 p.dump( classifier, open( "plantsModel.p", "wb" ) )
-
-# pred = classifier.predict(testd)
-
-# print "Rightly chosen samples : %d from %d samples" % ((pred == testl).sum(), testl.shape[0])
-# #print "Accuracy: %f%%" % (testl.shape[0] / (pred == testl).sum() )
-
-
-# print "NEURONAL NETWORK:"
-# clf = nn.MLPClassifier(solver="lbfgs", alpha=1e-5,
-#                        hidden_layer_sizes=(80),
-#                        random_state=1, early_stopping=False,
-#                        max_iter=120, verbose=False)
-
-# print "Fitting..."
-# clf.fit(traind, trainl)
-# print "Finished fitting..."
-
-# pred = clf.predict(testd)
-
-# print "Rightly chosen samples : %d from %d samples" % ((pred == testl).sum(), testl.shape[0])
-# #print "Accuracy: %f%%" % (testl.shape[0] / (pred == testl).sum() )
-
-# print "DECISIONTREE:"
-
-# dtc = DecisionTreeClassifier(max_depth=5)
-
-
-# print "Fitting..."
-# dtc.fit(traind, trainl)
-# print "Finished fitting..."
-
-# pred = dtc.predict(testd)
-
-# print "Rightly chosen samples : %d from %d samples" % ((pred == testl).sum(), testl.shape[0])
-# #print "Accuracy: %f%%" % (testl.shape[0] / (pred == testl).sum() )

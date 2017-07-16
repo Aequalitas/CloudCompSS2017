@@ -315,9 +315,6 @@ resources:
                         img = cv2.imdecode(n.fromstring(image.read(), n.uint8), cv2.IMREAD_UNCHANGED)
                         res = cv2.resize(img, (Y_SIZE, X_SIZE), interpolation = cv2.INTER_CUBIC)
 
-                        print res
-                        print res.shape
-
                         resC = 0
                         for a in range(0, X_SIZE):
                                 for b in range(0, Y_SIZE):
