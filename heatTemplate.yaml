@@ -129,6 +129,9 @@ resources:
         - protocol: tcp
           port_range_min: 80
           port_range_max: 80
+        - protocol: tcp
+          port_range_min: 8080
+          port_range_max: 8080
 
      #create a neutron floating ip (external ip address)
   floating_ip:
@@ -165,7 +168,6 @@ resources:
         package_upgrade: true
         packages:
         - python
-        - python-pip
         write_files:
         - path: /tmp/python/templates/index.html
           content: |
@@ -302,20 +304,20 @@ resources:
                                     resC += 1
 
                         return prepImage
-
-
-        
         # install all needed parts for the webserver lib flask and start the webserver
         runcmd:
+        - wget https://bootstrap.pypa.io/get-pip.py #apt-get install pip version 1.5.4 (too old for opencv)
+        - sudo python get-pip.py
         - pip install setuptools
         - pip install flask
         - pip install opencv-python
-        - curl 192.168.0.4/update/1/1
+        - pip install scikit-learn # for pickle and the serialized model
+        - pip install scipy # for pickle and the serialized model
+        - curl 192.168.0.4:8080/update/1/1 # register this machine at the ha proxy
         - cd /tmp/
         - mkdir python
         - cd python
-        - ip="$(hostname -I)"
-        - FLASK_APP=serv.py flask run -h $ip -p 80
+        - sudo FLASK_APP=serv.py flask run -h $(hostname -I) -p 80
         
         
   #compute resources
@@ -360,45 +362,46 @@ resources:
                     timeout client  10000
                     timeout server  10000
                     
-                listen haproxy 0.0.0.0:80        
+                listen haproxy 192.168.73.148:80        
                     mode http
                     balance roundrobin
                     option httpclose
                     option forwardfor
-                    
         - path: /tmp/python/confServ.py
           content: |
                 import subprocess as sp
                 from flask import Flask as f
                 from flask import request as req
                 app = f(__name__)
-                
+
                 HAPATH = "/etc/haproxy/haproxy.cfg"
-                
+
                 @app.route("/")
                 def hello():
-                	return "Hello %s" % req.remote_addr
-                
+                    return "Hello %s" % req.remote_addr
+
                 @app.route("/update/<int:type>/<int:serverNR>")
                 def updateHAProxy(type, serverNR):
-                	ip = req.remote_addr
-                	name = "webserver%d" % serverNR
-                	if(type == 1):
-                		cmd = 'echo "        server %s %s check" >> %s' % (name, ip, HAPATH)
-                	else:
-                		pattern = "server %s %s check" % (name, ip)
-                		cmd = "sed -i '/%s/d' %s" % (pattern, HAPATH)
-                
-                	sp.call(cmd, shell=True)
-                	sp.call("service reload haproxy")
-                    
+                    ip = req.remote_addr
+                    name = "webserver%d" % serverNR
+
+                    if(type == 1):
+                        cmd = 'printf "    server %s %s:80 check\n" >> %s' % (name, ip, HAPATH)
+                    else:
+                        pattern = "server %s %s:80 check" % (name, ip)
+                        cmd = "sed -i '/%s/d' %s" % (pattern, HAPATH)
+
+                    sp.call(cmd, shell=True)
+                    sp.call("service haproxy reload", shell=True)
+                    return "OK"
+        
         runcmd:
         - pip install setuptools
         - pip install flask 
         - cd /tmp/
         - mkdir python
         - cd python
-        - FLASK_APP=confServ.py flask run
+        - FLASK_APP=confServ.py flask run -h $(hostname -I) -p 8080
         - service haproxy start
         
   haProxyPort:
