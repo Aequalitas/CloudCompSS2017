@@ -78,31 +78,7 @@ parameters:
     label: users public key
     description: public key of the additional user that is injected during instance initialization
     hidden: false
-    default: ssh-rsa MIIEqQIBAAKCAQEAm20SS9yznje9NiZEgV/BNNo+XGyfbpMbydd+7RKvqjX3N5wZ
-                    AflCjgJn+ScYFSX3OCvyUg6mRzN8xngGM3w2KpEtQSWCjWd2CxZxWMHbtBJtNChK
-                    2m35xw/NvKEPowVlJW53Gad62rQYzNxlfC9XwhynrYszN8rMMIb+EkMRlSGYnnNz
-                    ax70eDP6rkGNoj8iQQptyiAwvFBVCy6xmekIaKeT8JjABlFAdupEqv6DsKjbMP9K
-                    iCmYjCvhAfzwpYF+ooJbQ5dSIKDLznQwOTBmIkXp0xVzqB0MybSvAQu7ogWryxWH
-                    pkhOG9YmLVmSlAjKlsDvfs1KLHLlCSEV+RBdiwIDAQABAoIBAQCPHOKA+epmIBrY
-                    Vmoz2jCz8tUDE33GOiyXMRcNQmx/xQsqqFAakiKnUi3crBOvvXKixUxuJFEVNKKK
-                    uQ+0roXNsjnCR8CrZX26/eJGgNJFP8ZQBV3PPP6GPdYJ/x+/0wLscYe3FpC3+qbv
-                    U20a6RjcgrgewxLZJ6HWeSZPOHRjJMmCuovvWGKyvfsBFi5jfyGflyZQ0vLcphaT
-                    /WrlfO+qg3kwK9QZLLbla6tUFqsURfPsXfYQ7fg5bODugWOgSW8nhub6WvWGCFNa
-                    bZUxmxggiO2IK+TTlV8rN/GfNMfg0PmYQ2X5KDXbtfcucXvLPLwrxqHKyYIpSPD3
-                    yiIBZPaBAoIAgQC+nHBb2Rp4swOxxtwXEL96wDEz9p2J2UGuyt+yTZAUX9FOvTlI
-                    +/31AfBe46LZLfWmekuL6FweeC4MWEncIU2d3ixxByGGy3OAnoX+qWHeWjzQzk+2
-                    zE43ONWurUdEAdOwqIYbLdKRGXcndW0UQHHnhpEOet2rg3lAMsPNI0qGywKCAIEA
-                    0L6qbhM12cL0TNPk0YUTN5BJgaxof+bzq/2ckD+mq8p6rk8Ke43ZcHuhQIjj/ruP
-                    H+H8jYzRfUmuafFP3qmBNEwm2Vv8F6n7CcBO2eYK36YgdsFoVNPbaePnlpvvb9n0
-                    VJ3DrutOU9kOau7Q5X7c0sd6wtwJQYwaEQd6DV+D7EECggCAIvlfYGr4gXcPUXpU
-                    feLzz1kebhNtGpMDi0fsPbIfoq1mIVV1AmBCW8dMTIzmH4VgUniUDgrHhEu230r/
-                    2mU98Z6HdwHA9BO2kL4FhhGcRIk4KXQBil/4ZgeGpbNjpSXUqtBxMuF4hmkuxM22
-                    AwZEICA/03FV5ReNkur9pFE6ZnsCggCBAJA9P3ziL1KygKbZwAH650V8oR5GaMsA
-                    Zh3RF68hHGUWe2EY4tBvOvGbq9fw/0IUjhhkymNxC4x8LlWsVhkwnUPq3ulQw0gC
-                    v6GETbgJWjgiDcqhaBs9bR6lSXBrfa6XN1qEzSOAGtabZHgFXzlFSQcoqa4d5xNw
-                    4M4lkXPOLVVBAoIAgHixbT1aOexA1sxDldhL182NhZhKzWEgVhTivXLguX2CX3iI
-                    zqVYpm9EJ17wM345tHWENqE84peiQi1re/HD9DPyEBNfoBeRZ2t6Kc9uONevKekQ
-                    0ZlP9h/j0jYUQwmWsnpx9EhlaFUItFsM9ByV3B+xffZo53l02jaLQTbfuEA5
+    default: AAAAB3NzaC1yc2EAAAADAQABAAABAQCIUtMQiX7D+G3Zob6VreTz3lgODT2DQUtY9C84RZ2ctTAxMQr8Thfb5p/yDLnmGurRwTS9E6/wADNXTFaLdPouq9aRSBDqbw7Ob+c6bLUSNT1S+CpY38Aw0gDPimFYLdgBsOpSd9gIJyD+GIMbXfHDhlFsO0NvDk+gIS+65FsLl+5S/iiAMSyxX9hu3XQrw24kWkGn4pFrYrkMB2zU60jL1RcjD4nqlqd5KUgbSFXLLWhGo3n27HVjfKz2cpqcjZ6DnAyAaImERlBlSc62ShYHfnko3liNV3e+SOf8imS94P5vgZ3hn8YDS7P/P6TgSk3sEScPwmrq4tQ3fH+fPgdV
 
 #this section (resources) allows the definition of openstack resources that are deployed as a heat stack
 resources:
@@ -153,9 +129,6 @@ resources:
         - protocol: tcp
           port_range_min: 80
           port_range_max: 80
-        - protocol: tcp
-          port_range_min: 5000
-          port_range_max: 5000
 
      #create a neutron floating ip (external ip address)
   floating_ip:
@@ -295,6 +268,7 @@ resources:
 
                     # trained model
                     MODEL = fetchModel()
+
         - path: /tmp/python/calcPlant.py
           content: |
                     import cv2
@@ -340,7 +314,8 @@ resources:
         - cd /tmp/
         - mkdir python
         - cd python
-        - FLASK_APP=serv.py flask run
+        - ip="$(hostname -I)"
+        - FLASK_APP=serv.py flask run -h $ip -p 80
         
         
   #compute resources

@@ -4,16 +4,6 @@ import pickle as p
 from sklearn import preprocessing
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
-# notes:
-# plants which image file names have to be changed to capital letters
-# Acer_Campestre
-# Quercus_Kewensis
-# Acer_Opalus
-# Lithocarpus_Edulis
-# Acer_Pictum
-# Quercus_Phellos
-# Quercus_Pontica
-# Alnus_Maximowiczii
 
 X_SIZE = 160
 Y_SIZE = 189
@@ -59,7 +49,6 @@ plants = ["Acer_Campestre", "Ilex_Aquifolium", "Quercus_Ilex", "Acer_Capillipes"
 "Fagus_Sylvatica"		,"Quercus_Greggii"	,	   "Zelkova_Serrata",
 "ginkgo_biloba"		,"quercus_hartwissiana"
 ]
-#im = cv2.imread("/home/smile/Desktop/Bilder/7U3ngSe.jpg") [0][0]=[182, 138, 75]
 
 print "Creating targetdata"
 
@@ -73,8 +62,6 @@ print "Finished reading targetData"
 
 #save all images with one value for 1 or 0 instead the three rgbs
 c = 0
-#im = cv2.imread("../data/Acer_Campestre/Acer_Campestre_01.ab.jpg")
-#print im.shape
 for x in plants:
     for i in range(1, 33):
         ii = ""
@@ -96,13 +83,8 @@ for x in plants:
         resC = 0
         for a in range(0, X_SIZE):
                 for b in range(0, Y_SIZE):
-
-                    #images[c][resC] = res[a][b]
-                    #print "Image value %s " % res[a][b][0]           
                     if res[a][b][0] == 255:
                         images[c][resC] = 1
-                        #print "Value %s " % images[c][resC]
-                        #print "SUM %s " % images.sum()
                     else:
                         images[c][resC] = 0
 
@@ -121,6 +103,5 @@ print images.sum()
 images = preprocessing.scale(images)
 
 export = [images, targetData]
-
 
 p.dump( export, open( "plants.p", "wb" ) )
