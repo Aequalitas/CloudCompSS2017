@@ -93,9 +93,9 @@ resources:
   private_network_subnet:
     type: OS::Neutron::Subnet
     properties:
-      cidr: 192.168.0.0/24
-      gateway_ip: 192.168.0.1
-      allocation_pools: [{ "start": 192.168.0.10, "end": 192.168.0.200 }]
+      cidr: 192.168.25.0/24
+      gateway_ip: 192.168.25.1
+      allocation_pools: [{ "start": 192.168.25.10, "end": 192.168.25.200 }]
       network: { get_resource: private_network }
       name: private_network_subnet
       dns_nameservers: { get_param: dns_nameserver }
@@ -130,8 +130,8 @@ resources:
           port_range_min: 80
           port_range_max: 80
         - protocol: tcp
-          port_range_min: 8080
-          port_range_max: 8080
+          port_range_min: 5678
+          port_range_max: 5678
 
      #create a neutron floating ip (external ip address)
   floating_ip:
@@ -313,7 +313,7 @@ resources:
         - pip install opencv-python
         - pip install scikit-learn # for pickle and the serialized model
         - pip install scipy # for pickle and the serialized model
-        - curl 192.168.0.4:8080/update/1/1 # register this machine at the haproxy
+        - curl 192.168.25.4:5678/update/1/1 # register this machine at the haproxy
         - cd /tmp/
         - mkdir python
         - cd python
@@ -397,14 +397,14 @@ resources:
                     return "OK"
         
         runcmd:
-        - sed -i "s/net.ipv4.ip_nonlocal_bind=0/net.ipv4.ip_nonlocal_bind=1/g" /etc/sysctl.conf
+        - echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf
         - sed -i "s/ENABLED=0/ENABLED=1/g" /etc/default/haproxy
         - pip install setuptools
         - pip install flask 
         - cd /tmp/
         - mkdir python
         - cd python
-        - FLASK_APP=confServ.py flask run -h $(hostname -I) -p 8080
+        - FLASK_APP=confServ.py flask run -h $(hostname -I) -p 5678
         - service haproxy start
 
   haProxyPort:
@@ -412,7 +412,7 @@ resources:
     properties:
         name: "haProxyIntern"
         network: {get_resource: private_network}
-        fixed_ips: [{"ip_address":192.168.0.4, "subnet": {get_resource: private_network_subnet}}]
+        fixed_ips: [{"ip_address":192.168.25.4, "subnet": {get_resource: private_network_subnet}}]
   
   haProxy:
     type: OS::Nova::Server
