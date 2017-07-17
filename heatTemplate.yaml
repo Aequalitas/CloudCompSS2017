@@ -313,7 +313,7 @@ resources:
         - pip install opencv-python
         - pip install scikit-learn # for pickle and the serialized model
         - pip install scipy # for pickle and the serialized model
-        - curl 192.168.0.4:8080/update/1/1 # register this machine at the ha proxy
+        - curl 192.168.0.4:8080/update/1/1 # register this machine at the haproxy
         - cd /tmp/
         - mkdir python
         - cd python
@@ -362,8 +362,9 @@ resources:
                     timeout client  10000
                     timeout server  10000
                     
-                listen haproxy 192.168.73.148:80        
+                listen haproxy   
                     mode http
+                    bind *:80
                     balance roundrobin
                     option httpclose
                     option forwardfor
@@ -396,6 +397,8 @@ resources:
                     return "OK"
         
         runcmd:
+        - sed -i "s/net.ipv4.ip_nonlocal_bind=0/net.ipv4.ip_nonlocal_bind=1/g" /etc/sysctl.conf
+        - sed -i "s/ENABLED=0/ENABLED=1/g" /etc/default/haproxy
         - pip install setuptools
         - pip install flask 
         - cd /tmp/
@@ -403,7 +406,7 @@ resources:
         - cd python
         - FLASK_APP=confServ.py flask run -h $(hostname -I) -p 8080
         - service haproxy start
-        
+
   haProxyPort:
     type: OS::Neutron::Port
     properties:
