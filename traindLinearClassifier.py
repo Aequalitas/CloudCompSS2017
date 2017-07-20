@@ -1,9 +1,9 @@
-from sklearn import *
-from sklearn.multiclass import *
-
-import numpy as n
-import pickle as p
-
+# File: traindLinearClassifier.py 
+# Author: Franz Weidmann
+# Description: This file takes the serialized
+# training and target data and splits into
+# train and test data. Then it trains the model 
+# and serializes this model object
 import numpy as n
 import pickle as p
 
@@ -12,9 +12,12 @@ SAMPLESIZE = 3200
 TRAINSAMPLESIZE = 30
 TESTSAMPLESIZE = (32 - TRAINSAMPLESIZE)
 
+# deserializing the training and target data
 plants = p.load(open("plants.p", "rb"))
 
+# creating training data variable
 d = plants[0]
+# creating target data by flatten it into a 1d array
 l = n.argmax(plants[1], axis=1)
 
 # traindata
@@ -53,6 +56,5 @@ classifier = linear_model.SGDClassifier(loss="hinge",penalty="none",
 print "Training data..."
 classifier.fit(traind, trainl)
 print "Finished training..."
-
 
 p.dump( classifier, open( "plantsModel.p", "wb" ) )

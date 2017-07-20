@@ -1,3 +1,7 @@
+# File: serv.py 
+# Author: Franz Weidmann
+# Description: This file is the main file for 
+# the web servers
 import gzip
 import urllib2
 import pickle as p
@@ -6,6 +10,9 @@ from flask import Flask as f, request as req, render_template as rT
 
 app = f(__name__)
 
+# list of plant names which are used in training and are needed to 
+# get the plant name that is associated with the index returned from
+# the prediction function
 PLANTS = ["Acer_Campestre", "Ilex_Aquifolium", "Quercus_Ilex", "Acer_Capillipes",	
 "Ilex_Cornuta"	,	   "Quercus_Imbricaria",
 "Acer_Circinatum",	"Liquidambar_Styraciflua", "Quercus_Infectoria_sub",

@@ -1,3 +1,8 @@
+# File: pickle100Plants.py 
+# Author: Franz Weidmann
+# Description: This file takes every image
+# and transforms, scale it and finaly serialize
+# it with pickle
 import cv2
 import numpy as n
 import pickle as p
@@ -5,15 +10,20 @@ from sklearn import preprocessing
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
+# fixed size for the images
 X_SIZE = 160
 Y_SIZE = 189
 
+# create image array which contains the new images
+# training data
 images = n.array([], n.int32)
 images.resize((3200, X_SIZE * Y_SIZE, 3))
 
+# create the target data array
 targetData = n.array([])
 targetData.resize((3200, 100))
 
+# list of plant names to walk through every folder and get the images
 plants = ["Acer_Campestre", "Ilex_Aquifolium", "Quercus_Ilex", "Acer_Capillipes",	
 "Ilex_Cornuta"	,	   "Quercus_Imbricaria",
 "Acer_Circinatum",	"Liquidambar_Styraciflua", "Quercus_Infectoria_sub",
@@ -60,7 +70,8 @@ for x in range(0, 100):
 
 print "Finished reading targetData"
 
-#save all images with one value for 1 or 0 instead the three rgbs
+# save all images with one value for 1 or 0 instead the three values of rgbs
+# flatten it to a one dimensional array for the machine learning algorithm
 c = 0
 for x in plants:
     for i in range(1, 33):
@@ -84,6 +95,7 @@ for x in plants:
         for a in range(0, X_SIZE):
                 for b in range(0, Y_SIZE):
                     if res[a][b][0] == 255:
+                        # if the pixel is white
                         images[c][resC] = 1
                     else:
                         images[c][resC] = 0
@@ -93,8 +105,6 @@ for x in plants:
 
         c += 1
         print "Image %d finished" % c
-
-
 
 print "Finished reading images"
 print images.sum()

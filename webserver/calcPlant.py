@@ -1,6 +1,12 @@
+# File: calcPlant.py 
+# Author: Franz Weidmann
+# Description: This file takes the uploaded user image file
+# object and transforms it then passes it to 
+# the trained model for the prediction process
 import cv2
 import numpy as n
 
+# fixed size for the images
 X_SIZE = 160
 Y_SIZE = 189
 
@@ -10,6 +16,7 @@ def calcPlant(model, image):
     print pred
     return pred[0]
 
+# transforms the image in resolution and pixel values
 def prepareImg(image):
 
     prepImage = n.zeros(shape=(X_SIZE * Y_SIZE,))
@@ -22,6 +29,7 @@ def prepareImg(image):
 
                 print res[a][b]       
                 if res[a][b] == 255:
+                    # for every white pixel
                     prepImage[resC] = 1
                 else:
                     prepImage[resC] = 0
