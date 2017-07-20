@@ -217,14 +217,13 @@ resources:
         
         runcmd:
         - wget -O /etc/haproxy/haproxy.cfg https://raw.githubusercontent.com/Aequalitas/CloudCompSS2017/master/haproxy/haproxy.cfg
-        - sed -i "s/net.ipv4.ip_nonlocal_bind=0/net.ipv4.ip_nonlocal_bind=1/g" /etc/sysctl.conf
+        - echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf
         - sed -i "s/ENABLED=0/ENABLED=1/g" /etc/default/haproxy
         - pip install setuptools
         - pip install flask 
         - cd /tmp/
         - mkdir python
         - cd python
-        - wget -O confServ.py https://raw.githubusercontent.com/Aequalitas/CloudCompSS2017/master/haproxy/confServ.py
         - FLASK_APP=confServ.py flask run -h $(hostname -I) -p 5678
         - service haproxy start
 
